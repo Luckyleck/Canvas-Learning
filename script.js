@@ -57,37 +57,87 @@ const c = canvas.getContext("2d")
 
 // for (let i = 0; i < 10; i++) {
 //     circles.push({
-    //         x: Math.random() * canvas.width,
-    //         y: Math.random() * canvas.height,
-    //         dx: Math.random() * 10 - 5
-    //     })
-    // }
-    
-let x = Math.random() * canvas.width + 30;
-let y = Math.random() * canvas.height + 30;
-let dx = 5;
-let dy = 4;
-let radius = 30;
+//         x: Math.random() * canvas.width,
+//         y: Math.random() * canvas.height,
+//         dx: Math.random() * 10 - 5
+//     })
+// }
 
-function animate() {
-    requestAnimationFrame(animate);
-    c.clearRect(0, 0, canvas.width, canvas.width);
-    c.beginPath();
-    c.arc(x, y, 30, 0, Math.PI * 2)
-    c.fillStyle = "blue"
-    c.fill()
-    c.strokeStyle = "blue"
-    c.stroke();
-    if ( x + radius > canvas.width || x - radius < 0) {
-        dx = -dx
+
+function Circle(x, y, dx, dy, radius) {
+    this.x = x
+    this.y = y
+    this.dx = dx
+    this.dy = dy
+    this.radius = radius
+
+    this.draw = function () {
+        c.beginPath();
+
+        c.fillStyle = "blue"
+        c.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
+        c.fill()
+
+        c.strokeStyle = "blue"
+        c.stroke();
     }
-    if (y + radius > canvas.height || y - radius < 0) {
-        dy = -dy
+
+    this.update = function () {
+        if (this.x + this.radius > canvas.width || this.x - this.radius < 0) {
+            this.dx = -this.dx
+        }
+        if (this.y + this.radius > canvas.height || this.y - this.radius < 0) {
+            this.dy = -this.dy
+        }
+        this.x += this.dx;
+        this.y += this.dy;
+
+        this.draw();
     }
-    x += dx;
-    y += dy;
-    console.log("asdfasdf")
 
 }
 
-animate();
+// Circle.prototype.draw = function () {
+//     c.beginPath();
+
+//     c.fillStyle = "blue"
+//     c.arc(x, y, 30, 0, Math.PI * 2)
+//     c.fill()
+
+//     c.strokeStyle = "blue"
+//     c.stroke();
+// }
+
+
+
+
+let circleArray = [];
+
+for (let i = 0; i < 50; i++) {
+
+    let x = Math.random() * canvas.width - 30;
+    let y = Math.random() * canvas.height - 30;
+    let dx = (Math.random() * - 0.5) * 8;
+    let dy = (Math.random() * - 0.5) * 8;
+    let radius = 30;
+
+    circleArray.push(new Circle(x, y, dx, dy, radius))
+
+}
+
+console.log(circleArray)
+
+
+// circle.draw()
+
+
+// function animate() {
+//     requestAnimationFrame(animate);
+
+//     c.clearRect(0, 0, canvas.width, canvas.width);
+//     circle.update();
+
+
+// }
+
+// animate();
