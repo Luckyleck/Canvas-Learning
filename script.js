@@ -63,9 +63,28 @@ const c = canvas.getContext("2d")
 //     })
 // }
 
+let mouse = {
+    x: undefined,
+    y: undefined
+}
+
+let maxRadius = 50;
+let minRadius = 2;
+
+let colorArray = [
+    '#580C82',
+    '#8F30A1',
+    '#FE4773',
+    '#F6D68D',
+    '#46B3A5',
+    '#2E6D92'
+]
+
 window.addEventListener('mousemove',
-    function () {
-        console.log('yessir')
+    function (event) {
+        mouse.x = event.x;
+        mouse.y = event.y;
+        console.log(mouse)
 })
 
 
@@ -76,19 +95,21 @@ class Circle {
         this.dx = dx
         this.dy = dy
         this.radius = radius
+        this.minRadius = radius
+        this.color = colorArray[Math.floor(Math.random() * colorArray.length)];
 
     }
 
     draw = function () {
         c.beginPath()
 
-        c.fillStyle = "black"
+        c.fillStyle = this.color
         c.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
         c.fill()
 
-        c.strokeStyle = "blue"
-        c.lineWidth = 2
-        c.stroke()
+        // c.strokeStyle = "blue"
+        // c.lineWidth = 2
+        // c.stroke()
 
 
     }
@@ -103,6 +124,18 @@ class Circle {
         this.x += this.dx
         this.y += this.dy
 
+        //interactivity
+
+        if (mouse.x - this.x < 50 && mouse.x - this.x > -50 
+            && mouse.y - this.y < 50 && mouse.y - this.y > -50) {
+            if (this.radius < maxRadius) {
+                this.radius += 1
+            }
+        } else if (this.radius > this.minRadius){
+            this.radius -= 1;
+        }
+
+
         this.draw()
     }
 
@@ -112,13 +145,13 @@ class Circle {
 
 let circleArray = [];
 
-for (let i = 0; i < 50; i++) {
+for (let i = 0; i < 1000; i++) {
 
-    let radius = 30;
+    let radius = Math.random() * 3 + 1;
     let x = Math.random() * (canvas.width - radius * 2) + radius;
     let y = Math.random() * (canvas.height - radius * 2) + radius;
-    let dx = (Math.random() * - 0.5) * 8;
-    let dy = (Math.random() * - 0.5) * 8;
+    let dx = (Math.random() * - 0.5) * 4;
+    let dy = (Math.random() * - 0.5) * 4;
 
     circleArray.push(new Circle(x, y, dx, dy, radius))
 
