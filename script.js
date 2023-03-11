@@ -63,81 +63,77 @@ const c = canvas.getContext("2d")
 //     })
 // }
 
+window.addEventListener('mousemove',
+    function () {
+        console.log('yessir')
+})
 
-function Circle(x, y, dx, dy, radius) {
-    this.x = x
-    this.y = y
-    this.dx = dx
-    this.dy = dy
-    this.radius = radius
 
-    this.draw = function () {
-        c.beginPath();
+class Circle {
+    constructor(x, y, dx, dy, radius) {
+        this.x = x
+        this.y = y
+        this.dx = dx
+        this.dy = dy
+        this.radius = radius
 
-        c.fillStyle = "blue"
+    }
+
+    draw = function () {
+        c.beginPath()
+
+        c.fillStyle = "black"
         c.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
         c.fill()
 
         c.strokeStyle = "blue"
-        c.stroke();
+        c.lineWidth = 2
+        c.stroke()
+
+
     }
 
-    this.update = function () {
+    update = function () {
         if (this.x + this.radius > canvas.width || this.x - this.radius < 0) {
             this.dx = -this.dx
         }
         if (this.y + this.radius > canvas.height || this.y - this.radius < 0) {
             this.dy = -this.dy
         }
-        this.x += this.dx;
-        this.y += this.dy;
+        this.x += this.dx
+        this.y += this.dy
 
-        this.draw();
+        this.draw()
     }
 
+
 }
-
-// Circle.prototype.draw = function () {
-//     c.beginPath();
-
-//     c.fillStyle = "blue"
-//     c.arc(x, y, 30, 0, Math.PI * 2)
-//     c.fill()
-
-//     c.strokeStyle = "blue"
-//     c.stroke();
-// }
-
-
 
 
 let circleArray = [];
 
 for (let i = 0; i < 50; i++) {
 
-    let x = Math.random() * canvas.width - 30;
-    let y = Math.random() * canvas.height - 30;
+    let radius = 30;
+    let x = Math.random() * (canvas.width - radius * 2) + radius;
+    let y = Math.random() * (canvas.height - radius * 2) + radius;
     let dx = (Math.random() * - 0.5) * 8;
     let dy = (Math.random() * - 0.5) * 8;
-    let radius = 30;
 
     circleArray.push(new Circle(x, y, dx, dy, radius))
 
 }
 
-console.log(circleArray)
+function animate() {
+    requestAnimationFrame(animate);
+
+    c.clearRect(0, 0, canvas.width, canvas.width);
+
+    for (let i = 0; i < circleArray.length; i++) {
+        circleArray[i].update();
+    }
 
 
-// circle.draw()
+}
 
-
-// function animate() {
-//     requestAnimationFrame(animate);
-
-//     c.clearRect(0, 0, canvas.width, canvas.width);
-//     circle.update();
-
-
-// }
-
-// animate();
+animate();
